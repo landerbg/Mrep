@@ -1,0 +1,588 @@
+
+.pressedbutton
+{
+    opacity: 0.9;
+    border-color : orange !important;
+}
+.alert_mainscreen
+{
+    border:2px solid red ;
+    margin-bottom: 7px;
+    
+    
+}
+.result
+{-webkit-overflow-scrolling: touch;}
+
+.tabs-list-content li a
+{
+    font-size:13px;
+}
+
+.dark-colour-background
+{
+ background  : #013655;   
+}
+.whitefont{
+    color:white !important;
+}
+#loginresult
+{
+display:none ; 
+padding-bottom: 5px;
+padding-left: 5px;
+padding-right: 5px;
+padding-top: 5px;
+border: 1px solid #ccc;
+background-color:#f0f8fc;
+border-radius:  4px;
+font-size: medium;
+color:white;
+text-shadow:none;
+}
+
+.maca
+{
+display:inline-block;
+border: 2px solid #013655;
+text-shadow: none;
+width : auto;
+border-radius:  4px;
+font-size: 9px !important;
+margin : 1px;
+padding:2px ;
+overflow:hidden;
+border-radius: 3px;
+
+}
+.alertmaca
+{
+   
+    
+    background: salmon !important;  
+    
+}
+
+.activemaca
+{
+ font-size: 12px !important;
+ 
+
+}
+.monitorart
+{
+ font-size: xx-small;
+ 
+}
+.monitorartcontent
+{
+padding:2px;
+  
+}
+
+.search-text-inheader
+{
+width:100px;
+height:24px;
+font-size:small;
+}
+
+
+
+
+
+
+.ui-input-listview {
+  margin-top: -1em !important;
+  margin-bottom: -1em !important;
+  margin-left: -0.5em !important; /* If you want to fix left as well */
+  margin-right: -0.5em !important; /* If you want to fix right as well */
+  border: none !important;
+  box-shadow: none !important;
+  background-color : transparent;
+}
+
+
+.diffColor
+{
+    
+  background-color: red;
+}
+.articul{
+    
+  /*background-color: #29abe2;*/  
+}
+.version
+{
+
+font-size : x-small !important;
+color: white;
+
+
+}
+.clickedli{
+    background-color: #5ca5d8 !important;
+    
+      
+}
+.clickedli p{
+    text-shadow:none !important;
+    color:white !important;
+}
+#header-btn-altcolor
+{
+    background : #ddf0f8;
+}
+/*Бутоните за вход */
+#loginbutton
+{  background: #013655 !important;
+   background: -webkit-linear-gradient(#0368A3, #013655) !important;
+   background: -moz-linear-gradient(#0368A3, #013655) !important;
+   background: -o-linear-gradient(#0368A3, #013655) !important;
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0368A3', endColorstr='#013655',GradientType=0 ) !important; /* IE6-9 */
+   color:white;    
+}
+.altlogin
+{ 
+   background: #013655 !important;
+   background: -webkit-linear-gradient(#0368A3, #013655) !important;
+   background: -moz-linear-gradient(#0368A3, #013655) !important;
+   background: -o-linear-gradient(#0368A3, #013655) !important;
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0368A3', endColorstr='#013655',GradientType=0 ) !important; /* IE6-9 */
+   color:white !important;    
+}
+#zaredispravka
+{   
+    background: #007734;
+    text-shadow: none; 
+    color:white;
+}
+.confirmbutton{
+    background: #007734 !important;
+    text-shadow: none !important; 
+    color:white !important;
+    border: none !important;
+}
+
+
+clearlogininfo
+{   background: coral;
+    
+}
+
+/* Контехнера на соправката - тестов клас*/
+.containerspravka
+{
+    overflow: hidden;
+    
+}
+
+/* Клас който винаги в видим в справката*/
+.importantdiv{ 
+ 
+  display:block;
+  width: 100%;
+  height: 100%;
+  padding: 1px;
+  
+  
+   
+}
+.notimportantdiv
+{
+ display:none;
+ 
+ 
+}
+/* ГИФ видим при заявка към базата*/
+#loadinggifdiv {
+    width: 200px;
+    height:200px;
+    text-align: left;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left:-100px;
+    margin-top:-100px;
+    background: url("../themes/images/ajax-loader.gif") no-repeat center center;
+    color:white;
+    z-index: 10;
+    opacity:0.3;
+   
+    
+    
+   
+}
+
+.ajax_loading
+{
+background-color:transparent !important;
+}
+
+.panels  {  
+    background: rgb(49, 57, 74) !important;   
+}
+
+.panelrow
+{
+border-bottom: 1px solid #475657;  
+border-top: 1px solid #95A5A6;
+color: rgb(196, 204, 218);
+display: block;
+font-family: Helvetica, sans-serif;
+font-size: 14px;
+font-weight: bold;
+padding-bottom: 0px;
+padding-left: 5px;
+padding-right: 5px;
+padding-top: 0px;
+text-align: left;
+text-overflow: ellipsis;
+text-shadow: rgba(0, 0, 0, 0.6) 0px 1px 0px;
+white-space: nowrap;
+
+}
+
+/* ФОН И ТЕКСТ ЗА ЦЕЛИЯ ДОКУМЕНТ*/
+.ui-page 
+{
+       /*background-image:   url("../themes/b8.png");*/
+       background: #F6F5F1;
+       font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif !important; 
+       /*-webkit-tap-highlight-color:rgba(0,0,0,0);*/
+       
+      
+       
+
+             
+}
+
+
+
+/* СТИЛОВЕ НА ТАБЛИЦАТА С РЕЗУЛТАТ ОТ СПРАВКАТА*/
+.mytable TD{
+   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+   font-weight: 300;
+   font-size: x-small;
+   
+   
+
+}
+.mytable TH{
+   font-family:"Verdana", Geneva, sans-serif !important;
+   font-size: x-small;
+   
+   
+
+}
+.mytable tr{
+   border-top : 1px solid black;
+   
+
+}
+
+
+
+
+.mytable tbody tr:nth-child(odd) td,
+.mytable tbody tr:nth-child(odd) th {
+  background-color: #f0f8fc;
+  
+  
+}
+.mytable tbody tr:nth-child(even) td,
+.mytable tbody tr:nth-child(even) th {
+  background-color: white;
+  
+  
+}
+.mytable thead th
+{
+ background-color: #013655;
+ color:#f0f8fc;
+ 
+ 
+ 
+ 
+ 
+}
+.mytable tbody tr:last-child {
+  border-bottom: 1px solid black;
+}
+.mytable
+{
+    border-spacing: 0px;
+}
+
+/* четни нечетни редове - оцветяване на таблица*/
+
+
+.inactive_page a
+{
+background : #013655 !important;    
+background: -webkit-linear-gradient(#0368A3, #013655) !important;
+background: -moz-linear-gradient(#0368A3,#013655) !important;
+background: -o-linear-gradient(#0368A3,#013655) !important;
+background: -ms-linear-gradient(#0368A3,#013655) !important;
+
+border :1px solid #013655 !important; 
+border-top: none !important;
+height: 38px;
+color:#5ca5d8 !important; 
+text-overflow: ellipsis !important;
+overflow: visible !important;
+white-space: normal !important;
+}
+.active_page a
+{
+background : #007734 !important;
+background: -webkit-linear-gradient(top, rgba(0,117,50,1) 0%,rgba(3,163,104,1) 100%) !important; /* Chrome10+,Safari5.1+ */
+background: -moz-linear-gradient(top, rgba(0,117,50,1) 0%,rgba(3,163,104,1) 100%) !important;
+background: -ms-linear-gradient(top, rgba(0,117,50,1) 0%,rgba(3,163,104,1) 100%) !important;
+background: -o-linear-gradient(top, rgba(0,117,50,1) 0%,rgba(3,163,104,1) 100%) !important;
+border :1px solid #007734 !important;
+border-top: none !important;
+height: 38px;
+color:#f0f8fc !important;
+text-overflow: ellipsis !important;
+overflow: visible !important;
+white-space: normal !important;
+    
+     
+}
+
+
+
+.ui-header-fixed
+{   background : #013655 !important;
+    background: -webkit-linear-gradient(#0368A3, #013655) !important;
+    background: -moz-linear-gradient(#0368A3, #013655) !important;
+    background: -ms-linear-gradient(#0368A3, #013655) !important;
+    background: -o-linear-gradient(#0368A3, #013655) !important;
+}
+.ui-header-fixed .ui-btn
+{
+
+-webkit-tap-highlight-color: rgba(92, 165, 216, 0.3);
+background :transparent !important;
+border:none !important;
+box-shadow:none !important;
+padding:7px !important;
+padding-left: 10px !important;
+padding-right: 10px !important;
+}
+
+
+.footer-text
+{
+    font-size:10px !important;
+  
+    
+}
+.footer-nav
+{
+    
+   font-size:20px;
+   
+}
+.header-nav
+{
+ font-size:16px;
+ color:#f0f8fc;
+ 
+}
+.liresult{
+padding-top:0 !important;
+padding-bottom:0 !important;
+}
+
+.h-button
+{
+ /*-webkit-tap-highlight-color: rgba(92, 165, 216, 0.3);*/
+background :transparent !important;
+border:none !important;
+box-shadow:none !important;
+padding:7px !important;
+padding-left: 10px !important;
+padding-right: 10px !important;
+
+  
+
+/*height: 100% !important;
+padding : 10px;
+margin:0px !important;*/
+}
+
+
+/* Стиложе на листовете които връща php
+
+
+*/
+.articulname
+{
+ font-size: 10px;
+ color:#013655 !important; 
+ font-weight: bold;
+}
+.li-zapisi li a
+{
+ 
+}
+
+.obektvspravka
+{
+font-size: larger;
+
+}
+
+.partnervspravka
+{  
+font-size:larger;
+color: orangered;    
+}
+.datavspravka
+{
+ float: right;
+ font-size: larger
+ 
+}
+.sumaspravka
+{
+
+font-size:larger;
+color: #013655;
+}
+/*Скрива се подробната информация в редовете в листа резултат от справките*/
+
+
+
+.logincontent{    
+padding-bottom: 10px;
+padding-left: 5px;
+padding-right: 5px;
+padding-top: 10px;
+border: 1px solid #013655;
+background-color: #5ca5d8;
+border-radius:  4px;
+
+}    
+    
+
+
+
+
+
+.maincontent{    
+padding-bottom: 5px;
+padding-left: 5px;
+padding-right: 5px;
+padding-top: 5px;
+border: 1px solid #ccc;
+background-color: #f7f7f7;
+border-radius:  4px;
+font-size: small;
+}
+
+.quickresultsspravka
+
+{
+  border-bottom:  1px dotted #ccc;
+  font-family: Tahoma, Arial, Geneva, sans-serif;
+  background-color: snow;
+  font-size: small; 
+  padding: 2px;
+}
+
+
+
+
+.quickresults
+
+{
+  
+  border-bottom: 2px dotted #ccc;
+  text-indent: 10px;
+  
+     
+}
+
+/*Towa e klasa na redovete v ekrana za byrzi sprawki*/
+.hf
+{   
+float:right;
+font-weight: bold;
+color: #069;
+padding: 4px;
+
+    
+}
+
+
+
+
+
+@media only screen 
+and (min-width : 450px) 
+
+ {
+
+.containerspravka{
+    overflow:hidden;
+    width:100%
+}
+
+.importantdiv { 
+  
+  padding: 5px;
+  height:100px;
+  width:50%;
+  float:left;
+}
+.notimportantdiv
+{ 
+  
+ display:inline-block;
+ margin-left: 20px;
+ padding: 5px;
+ width:40%;
+ height:100px;
+ 
+ 
+}
+
+
+
+.obektvspravka
+{
+
+}
+.datavspravka
+{
+float:left;
+padding-right : 5px;
+
+}    
+
+}
+
+@media only screen 
+and (min-width : 1024px)
+{
+
+.maca
+{
+font-size: 16px !important;
+margin : 6px;
+padding:6px ;
+}
+
+.activemaca
+{
+ font-size: 14px !important;
+ 
+
+}    
+}
+
+
+ 

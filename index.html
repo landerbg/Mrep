@@ -1,0 +1,841 @@
+﻿<!DOCTYPE html>
+<html>
+   <head>
+      <title>Mrep</title>
+      <!-- the meta "viewport" tag sets the screen width to the pixel width of the device -->
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,  minimum-scale=1, user-scalable=no">
+      <!-- Tova opravia niakakav bug s IE10 zasega -->
+      <meta http-equiv="X-UA-Compatible" content="IE=9">
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+      <meta http-equiv="Content-Language" content="bg" />
+
+	  <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+      <link rel="apple-touch-icon" href="themes/logo/logo_64x64.png?v=602">
+      <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">  
+      <link rel="stylesheet" type="text/css" href="css/mobipick.css?v=602">
+      <link rel="stylesheet" type="text/css" media="all" href="css/whhg.css?v=602" />
+      <link rel="stylesheet" type="text/css" href="css/my.css?v=602">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+      <script src="phonegap.js"></script>
+      <script type="text/javascript" src="js/appinit.js?v=602"></script>
+      <script type="text/javascript" src="js/myjs.js?v=602"></script>
+	  <!-- /fix za navigaciata pri IOS 9 - da se proveri da ne bi da ima stanichni efekti-->
+	  <script>
+	   
+	    
+	  $(document).on('mobileinit', function () {
+    $.mobile.hashListeningEnabled = false;
+});
+	  </script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>     
+      <script type="text/javascript" src="js/myajax-js.js?v=602"></script>
+      <script type="text/javascript" src="js/barcodefunctions.js"></script>
+      <script type="text/javascript" src="barcodescanner.js"></script>
+      <script type="text/javascript" src="childbrowser.js"></script>
+      <script type="text/javascript" src="js/xdate.js"></script>
+      <script type="text/javascript" src="js/xdate.i18n.js"></script>
+      <script type="text/javascript" src="js/mobipick.js?v=1"></script>
+      
+      <script>
+         function stopEnterKey(evt) {
+         var evt = (evt) ? evt : ((event) ? event : null);
+         var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+         if ((evt.keyCode == 13) && (node.type == "text")) { return false; }
+         }
+         document.onkeypress = stopEnterKey;
+         
+      </script>
+   </head>
+   <body>
+      <div data-role="page" id="login" >
+         
+          <div style="
+            position: absolute;
+            bottom: 5px;
+            width:95%;
+            text-align: right;
+            padding: 5px;
+            font-size: 0.7em;
+            
+            "><div style="float:left">p_zlatev80@yahoo.com</div><i >Peter Zlatev 2014 ®</i></div>
+         <div data-role="content">
+             
+            <div id="loginresult" ></div>
+            <div class="maincontent" style="background:white;">
+                <div style="padding-top: 15px;padding-bottom:15px;"><img src="Mistral.png" style="margin: 0 auto;display: block;"></div>
+            <input type="text" placeholder="Потребителско име..." name="accountname" autocorrect="off" autocapitalize="off" autocomplite="off" spellcheck="false" id="accountname" data-clear-btn="true" />
+            <input type="password"  name="pass" id="parola" placeholder="Парола..." data-clear-btn="true" />	
+            <a href="#" data-role="button" data-mini="true" id="loginbutton" class="buttonforpress" style="margin-top:20px;">Вход</a>
+            <div class="ui-grid-a">
+            <div class="ui-block-a" style="width:33%">
+            <a href="#" data-role="button" id="mrepuser1" class="buttonforpress altlogin" data-mini="true" style="display:none">Вход 1</a>
+            </div>
+            <div class="ui-block-b" style="width:33%">
+            <a href="#" data-role="button" id="mrepuser2" data-mini="true"  class="buttonforpress altlogin" style="display:none">Вход 2</a>
+            </div>
+            <div class="ui-block-c" style="width:33%">
+            <a href="#" data-role="button" id="mrepuser3" data-mini="true"  class="buttonforpress altlogin" style="display:none">Вход 3</a>
+            </div>
+            </div>
+            <script> 
+               $('#accountname').val(localStorage.getItem('mrepuser'));
+               $('#parola').val(localStorage.getItem('mrepparola')); 
+            </script>
+            <div class="ui-grid-a" style="margin-top:15px;">
+            <div class="ui-block-a">
+            <a href="#" data-role="button" id="savelogininfo" class="buttonforpress" data-mini="true">Запази</a>
+            </div>
+            <div class="ui-block-b">
+            <a href="#clearaccounts" data-rel="popup"  data-role="button" id="clearlogininfo" data-mini="true"  class="buttonforpress" >Изчисти</a>
+           
+            </div>
+            </div>
+            </div>
+            <a href="#" data-role="button" data-mini="true" id="guestloginbutton" class="buttonforpress guestbutton" >Тестов вход магазин</a>
+            <a href="#" data-role="button" data-mini="true" id="guestrestloginbutton" class="buttonforpress guestbutton">Тестов вход ресторант</a>
+            <div class="ui-grid-b">
+                <div class="ui-block-a" style="width:33%">
+            <a href="#settings_choser" data-transition="slideup" data-role="button" data-mini="true" class="buttonforpress"  id="setlogininfo" style="background: #d8cd5c;">Настройки</a>
+                </div>
+                
+                <div class="ui-block-b" style="width:33%">
+                    <a href="#helplog"  data-role="button" data-mini="true" class="buttonforpress" >Помощ</a>
+                </div>
+				<div class="ui-block-c" style="width:33%">
+                    <a href="#"  data-role="button" data-mini="true" class="buttonforpress" onclick="location.reload(true)" >Update</a>
+                </div>
+            </div>      
+           
+            <div class="maincontent" style="margin-top:5px;display:none;" id="reklama"></div>
+            </div>
+            <div data-role="popup" id="clearaccounts" data-overlay-theme="b" data-theme="a">
+                <div data-role="header" data-theme="a">
+    <h1>Изтриване на акаунти?</h1>
+    </div>
+    <div role="main" class="ui-content">
+        <h3 class="ui-title">Желаете ли да изтриете всички запазени пароли?</h3>
+    <p>Това действие е необратимо и ще трябва да ги въведете наново.</p>
+        <a href="#login" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-а" >Отказ</a>
+        <a href="#login" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-а" id="clear_all" style="background:#d85c67">Изтрий</a>
+    </div>    
+            </div>
+         </div>
+      
+      
+      <div data-role="page" id="home" data-theme="a">
+         <div data-role="header" data-theme="b" data-position="fixed" data-id="headermenu">
+            <a href="#help" data-rel="dialog" class="ui-btn-left h-button"  ><i class="icon-news header-nav"></i></a>
+            <a href="#login" data-rel="dialog" class="ui-btn-right h-button" data-transition="flip"><i class="icon-exit header-nav"></i></a>
+            <span class="ui-title"><i style="font-size: 12px;">Mrep версия 0.61</i></span>
+           
+         </div>
+         <div data-role="content">
+             
+            <select data-native-menu="true" id="the-select">
+               <option value="0">Изберете бърза справка</option>
+               <option value="990" >Обороти за днес</option>
+               <option value="991" >Обороти за вчера</option>
+               <option value="98" >Наличност</option>
+               <option value="97" >Наличност каси</option>
+			   <option value="96" >Задължения по обекти</option>
+            </select>
+            <br/>
+            <div class="maincontent" id="todaysales" style="display:none;">
+            </div>
+         </div>
+         <div data-role="footer" data-position="fixed" data-theme="b" data-tap-toggle="false" data-id="footermenu">
+            <div data-role="navbar" >
+               <ul class="footerul">
+                  <li class="active_page"><a  href="#home" ><i class="icon-home footer-nav"></i><br/><span class="footer-text">Начало</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#spravki"><i class="icon-report footer-nav"></i><br/><span class="footer-text">Справки</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#monitors"><i class="icon-monitor footer-nav"></i><br/><span class="footer-text">Монитор</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#nomenklaturi"><i class="icon-store footer-nav"></i><br/><span class="footer-text">Склад</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#filterpage"><i class="icon-squaresettings footer-nav"></i><br/><span class="footer-text">Други</span></a>
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <!-- страница spravki-->
+      <div data-role="page" id="spravki">
+         <div data-role="header" data-theme="b" data-position="fixed" data-id="headermenu">
+            <h4>Справки</h4>
+         </div>
+         <div data-role="content" id="menu_spravki" style="display:none"> 
+            <div data-role="tabs" id="tabs-2">
+               <div data-role="navbar">
+                  <ul>
+                     <li ><a href="#sp-one" style="font-size:12px;">Операции</a></li>
+                     <li><a href="#sp-two" style="font-size:12px;">Финансови</a></li>
+                     <li><a href="#sp-three" style="font-size:12px;">Други</a></li>
+                  </ul>
+               </div>
+               <div id="sp-one">
+                  <ul  class="tabs-list-content" data-role="listview" data-inset="true" data-icon="false" >
+                     <li ><a href="#filter" data-transition="none" data-name="1" >Продажби</a>
+                     </li>
+                     <li ><a href="#filter" data-transition="none" data-name="4" >Сторно продажби</a>
+                     </li>
+                     <li ><a href="#filter" data-transition="none" data-name="5">Доставки</a>
+                     </li>
+                     <li ><a href="#filter" data-transition="none" data-name="8">Ревизии</a>
+                     </li>
+                     <li ><a href="#filter" data-transition="none" data-name="6">Изписване</a>
+                     </li>
+                     <li ><a href="#filter" data-transition="none" data-name="7">Трансфери</a>
+                     </li>
+                     <li ><a href="#filter" data-transition="none" data-name="14">Групирани продукти</a>    
+                     </li>
+                     <li ><a href="#filter" data-transition="none" data-name="16">Групирана реализация</a>
+                     </li>
+                  </ul>
+               </div>
+               <div id="sp-two" >
+                  <ul  data-role="listview" data-inset="true" class="tabs-list-content" data-icon="false" >
+                     <li data-mini=""><a href="#filter" data-transition="none" data-name="11">Разсрочени плащания</a>
+                     </li>
+                     <li ><a href="#filter" data-transition="none" data-name="2">Обороти по дни</a>
+                     </li>
+                     <li ><a href="#filter" data-transition="none" data-name="3">Печалба за период</a>   
+                     </li>
+                     <li ><a href="#filter" data-transition="none" data-name="17">Печалба за период - 2</a>   
+                     </li>
+                     <li ><a href="#filter" data-transition="none" data-name="24">Оборот по оператори</a>
+                     </li>
+                     <li ><a href="#filter" data-transition="none" data-name="20">Парични потоци</a>
+                     </li>
+                      <li ><a href="#filter" data-transition="none" data-name="21">Движение на каси</a>
+                      </li>
+                     <li ><a href="#filter" data-transition="none" data-name="101">Наличност</a>
+                     </li>
+                  </ul>
+               </div>
+               <div id="sp-three">
+                  <ul class="tabs-list-content" data-role="listview" data-inset="true" data-icon="false">
+                     <li ><a href="#filter" data-transition="none" data-name="9">Активност потребители</a>
+                     </li>
+                     <li ><a href="#filter" data-transition="none" data-name="10">Продадени - недоставени</a>
+                     </li>
+                     <li ><a href="#filter" data-transition="none" data-name="22">Преоценка</a>
+                     </li>
+                     <li ><a href="#filter" data-transition="none" data-name="12">Стоки под минимум</a>
+                     </li>
+                     
+                  </ul>
+               </div>
+            </div>
+         </div>
+         <div data-role="footer" data-position="fixed" data-theme="b" data-id="footermenu" data-tap-toggle="false">
+            <div data-role="navbar"  data-grid="d">
+               <ul class="footerul">
+                  <li class="inactive_page"><a  href="#home"><i class="icon-home footer-nav" ></i><br/><span class="footer-text">Начало</span></a>
+                  </li>
+                  <li class="active_page "><a href="#spravki"><i class="icon-report footer-nav"></i><br/><span class="footer-text">Справки</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#monitors"><i class="icon-monitor footer-nav"></i><br/><span class="footer-text">Монитор</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#nomenklaturi"><i class="icon-store footer-nav"></i><br/><span class="footer-text">Склад</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#filterpage"><i class="icon-squaresettings footer-nav"></i><br/><span class="footer-text">Други</span></a>
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <!-- СТРАНИЦА С ФИЛТРИ-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <div data-role="page" id="filter" data-theme="a" >
+          <div id="filterpanel" data-role="panel" data-display="overlay" data-position="left"   class="panels panel">
+            <div class="panelrow">
+               Резултати на страница:
+               <input type="range" name="rows" id="rows" value="100" min="100" max="500" step="10" data-highlight="true"/>
+            </div>
+            <div class="panelrow">
+               Отместване справки в часове:<br/>
+               <input type="range" name="hours" id="hours" value="5" min="0" max="12"  data-highlight="true"/>
+               <input type="hidden" name="Spravka" id="filterform" value="1" />
+               <input type="hidden" id="lastrow" value="1" />
+               <input type="hidden" id="klientnameid" value="1" />
+            </div>
+            <div class="panelrow">
+               Включи текущия ден:<br/>
+               <select name="flip-1" id="tekday" data-mini="true" data-role="slider">
+                  <option value="1">Не</option>
+                  <option value="0" selected>Да</option>
+               </select>
+            </div>
+            <div class="panelrow">
+               <div class="ui-field-contain">
+                  Филтър по обект: <a href='' class='ui-disabled' data-role='button' id='objects-checker' data-mini='true'>Зареди обекти</a><br/>                       
+                  <form id='testform2'>
+                     <fieldset data-role="controlgroup" data-iconpos="right" id='select-objects'>
+                     </fieldset>
+                  </form>
+               </div>
+            </div>
+            <div class="panelrow">
+               <a href="#save_config" data-rel="popup" class="ui-btn ui-corner-all ui-shadow  ui-btn-inline ui-btn-а">Запис</a>
+               <a href="#filter" data-rel="close"   class=" ui-btn ui-corner-all ui-shadow  ui-btn-inline ui-btn-а" >Затвори</a>
+            </div>
+         </div>
+         
+         <div data-role="header" data-theme="b" data-position="fixed" data-id="headermenu">
+            <a href="#filterpanel" data-role="button"  class="ui-btn-left h-button">
+            <i class="icon-settingsandroid header-nav"></i>
+            </a>
+            <a href="#object-content" data-role="button" data-rel="dialog"  class="ui-btn-right h-button ui-state-disabled">
+            <i class="icon-settingsfour-gearsalt header-nav"></i>  
+            </a>
+            <span class="ui-title" >Филтър</span>
+            <div data-role="navbar"></div>
+            <!-- /navbar -->
+         </div>
+         <!-- /header -->
+         <div data-role="content">
+            <ul data-role="listview" data-inset="true" data-mini="true">
+               <li data-role="list-divider" style="background:#5ca5d8;text-shadow: none;text-align: center;color:white" id="spravkaname"></li>
+               <li><span style="float:left;" id="otdata1">От дата:</span><span style="float:right"><input style="text-align:right;" name="ot" type="text" data-role="none" id="otdata"  class="ui-input-listview i-txt " value="" /></span></li>
+               <li><span style="float:left;" id="dodata1">До дата:</span><span style="float:right"><input style="text-align:right;" name="do"  type="text" data-role="none" id="dodata" class="ui-input-listview  i-txt" value="" /></span></li>
+               <li>
+                 
+                 
+                     <fieldset data-role="controlgroup" data-type="horizontal" align="center">
+                        <input type="radio" name="datefilter" id="radio-choice-21" value="1" checked="checked"  />
+                        <label for="radio-choice-21"  class="dateradio" style="font-size:11px;">Ден</label>
+                        <input type="radio" name="datefilter" id="radio-choice-22" value="7" />
+                        <label for="radio-choice-22"  class="dateradio" style="font-size:11px;">Седмица</label>
+                        <input type="radio" name="datefilter" id="radio-choice-23" value="30" />
+                        <label for="radio-choice-23"  class="dateradio" style="font-size:11px;">Месец</label>
+                        <input type="radio" name="datefilter" id="radio-choice-24" value="366" />
+                        <label for="radio-choice-24" class="dateradio" style="font-size:11px;">Година</label>
+                     </fieldset>
+                 
+               </li>
+            </ul>
+            <a href="#" data-role="button" data-transition="none" id="zaredispravka" data-theme="a" class="buttonforpress"> Зареди справка</a>
+         </div>
+         <!-- /content -->
+         <div data-role="footer" data-position="fixed" data-theme="b" data-id="footermenu" data-tap-toggle="false">
+            <div data-role="navbar" data-grid="d">
+               <ul class="footerul">
+                  <li class="inactive_page"><a  href="#home"><i class="icon-home footer-nav" ></i><br/><span class="footer-text">Начало</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#spravki"><i class="icon-report footer-nav"></i><br/><span class="footer-text">Справки</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#monitors"><i class="icon-monitor footer-nav"></i><br/><span class="footer-text">Монитор</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#nomenklaturi"><i class="icon-store footer-nav"></i><br/><span class="footer-text">Склад</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#filterpage"><i class="icon-squaresettings footer-nav"></i><br/><span class="footer-text">Други</span></a>
+                  </li>
+               </ul>
+            </div>
+         </div>
+          <div data-role="popup" id="save_config" data-overlay-theme="b" data-theme="a">
+                <div data-role="header" data-theme="a">
+    <h1>Запис филтри?</h1>
+    </div>
+    <div role="main" class="ui-content">
+        <h3 class="ui-title">Желаете ли да запазите промените?</h3>
+    
+        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-а" data-rel="back">Отказ</a>
+        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-а" data-rel="back" data-transition="flow" id="savefilters_perm">Запис</a>
+    </div>    
+            </div>
+      </div>
+      <!--- 
+         Страница с филтри справките
+         
+         -->
+      <!--- 
+         Страница с обекти за филтриране в справките
+         
+         -->
+      
+      
+      <div data-role="page" id="object-content">
+         <div data-role="content">
+            <a href=""  data-role="button" data-mini="true " id="load-fields" >Зареди полета</a>
+            <div id="filtercolumns" class="maincontent">
+            </div>
+            <a href="#filter" data-role="button" id="saveobjects" >Запис</a>    
+         </div>
+      </div>
+      <div data-role="page" id="filterpage">
+         <div data-role="header" data-theme="b" data-position="fixed" data-id="headermenu">	
+            <span class="ui-title"></span>
+         </div>
+         
+      
+          
+         <div data-role="content"><div data-role="tabs" id="tabs-2">
+               <div data-role="navbar">
+                  <ul>
+                     <li><a href="#other-three"  style="font-size:12px;">Други</a></li>
+                     <li ><a href="#other-one" class='ui-disabled' style="font-size:12px;">Настройки</a></li>
+                     <li><a id="database-manipulation"  href="#other-two"  style="font-size:12px;">База данни</a></li>
+                     
+                  </ul>
+               </div>
+                 <br>
+               <div id="other-three" class="maincontent">
+                  Докладвай проблем : 
+                  <a href="mailto:p_zlatev80@yahoo.com?subject=Problem report" target="_blank" data-role="button">Изпрати имейл</a>
+                  
+               </div>
+               <div id="other-one" class="maincontent">
+                   
+               
+               </div>
+               <div id="other-two" class="maincontent">
+                  <a href="#filterpage" data-role="button" data-theme="a" id="startsql" class='ui-disabled'>Процедура 1</a>
+               </div>
+               
+            </div>
+            
+            <div id="custsqlresult"></div>
+            <br/>
+         </div>
+         <div data-role="footer" data-position="fixed" data-theme="b" data-id="footermenu" data-tap-toggle="false">
+            <div data-role="navbar">
+               <ul class="footerul">
+                  <li class="inactive_page"><a  href="#home" ><i class="icon-home footer-nav" ></i><br/><span class="footer-text">Начало</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#spravki"><i class="icon-report footer-nav"></i><br/><span class="footer-text">Справки</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#monitors"><i class="icon-monitor footer-nav"></i><br/><span class="footer-text">Монитор</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#nomenklaturi"><i class="icon-store footer-nav"></i><br/><span class="footer-text">Склад</span></a>
+                  </li>
+                  <li class="active_page"><a href="#filterpage"><i class="icon-squaresettings footer-nav"></i><br/><span class="footer-text">Други</span></a>
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <!-- СТРАНИЦА С РЕЗУЛТАТ ОТ СПРАВКАТА-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <div data-role="page" id="data">
+         <div data-role="header" data-theme="b" data-position="fixed" data-tap-toggle="false" data-id="headermenu">
+            <div class="ui-grid-b">
+               <div class="ui-block-a" style="width:20%;">
+                  <a data-rel="back" data-role="button"   class="ui-btn-left" style="float:left;" data-transitions="none"><i class="icon-pageback header-nav" ></i></a>
+               </div>
+               <div class="ui-block-b" style="width:45%;">
+                  <form class="ui-filterable ">
+                     <input data-type="search" placeholder="Търсене..."  data-theme="a" style="font-size: 10px !important;" id="filterBasic-input" />
+                  </form>
+               </div>
+               <div class="ui-block-c" style="width:35%;">
+                  <a href="#"  data-role="button" class="h-button scrollup"  style="margin-left:2px !important;margin-top:3px !important;"><i class="icon-arrow-up header-nav" ></i></a>
+                  <a href="#"  data-role="button" class="h-button scrolldown"  style="margin-left:2px !important;margin-top:3px !important;"><i class="icon-arrow-down header-nav" ></i></a>
+               </div>
+            </div>
+         </div>
+         <!-- /header -->
+         <div data-role="content">
+            <div class="result"></div>
+         </div>
+      </div>
+      <!-- СТРАНИЦА СЪС СПРАВКИ ВТОРА ВЛОЖЕНОСТ -->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <div data-role="page" id="data2">
+         <div data-role="header" data-theme="b" data-position="fixed" data-id="headermenu"> <a data-icon="back" class="ui-btn-left h-button" data-rel="back" >Обратно</a>
+            <a href="#home" data-icon="home" class="ui-btn-right h-button">Начало</a>
+            <span class="ui-title" >Резултат</span>
+         </div>
+         <!-- /header -->
+         <div data-role="content" class="final"></div>
+         <!-- /header resultat ot spravkite-->
+         <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
+            <a href="#" data-icon="arrow-u" class="ui-btn-left h-button scrollup" >Горе</a>		
+            <a href="#" data-icon="arrow-d" class="ui-btn-right h-button scrolldown">Долу</a>
+            <h1><a href='' class="ui-btn-center printbutton">Печат</a></h1>
+         </div>
+      </div>
+      <!-- /end of page aboutus -->
+      <!-- СТРАНИЦА С ТРЕТА ДЪЛБОЧИНА СПРАВКИ-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <div data-role="page" id="data3">
+         <div data-role="header" data-theme="b" data-position="fixed" data-id="headermenu">
+            <a data-icon="back" class="ui-btn-left h-button" data-rel="back">Обратно</a>
+            <a href="#home" data-icon="home" class="ui-btn-right h-button">Начало</a>
+            <span class="ui-title"></span>
+            <div data-role="navbar"></div>
+            <!-- /navbar -->
+         </div>
+         <!-- /header -->
+         <div data-role="content" class="final2"></div>
+         <!-- /header resultat ot spravkite-->
+         <div data-role="footer" data-position="fixed" data-tap-toggle="false"></div>
+         <!-- /footer -->
+      </div>
+      <!-- СТРАНИЦА С МОНИТОРИНГ СПРАВКИ В РЕАЛНО ВРЕМЕ-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <div data-role="page" id="monitors">
+         <div data-role="header" data-theme="b" data-position="fixed" data-id="headermenu"> 
+            <a href="#" class="ui-btn-left h-button" data-role="button"  id="startmonitoring" ><i class="icon-play header-nav" style="color:#007734;"></i></a>		
+            <a href="#" data-role="button" class="ui-btn-right h-button"  id="stopmonitoring" ><i class="icon-stop header-nav" style="color:#CD5C5C;"></i></a>
+            <span
+               class="ui-title"> <span id="monitorstatus" style="color:white">
+            Спрян
+            </span></span>
+         </div>
+         <div data-role="content">
+            <div id="sales">
+                <p>Натиснете старт за да следите отворените маси в реално време.</p>
+            </div>
+         </div>
+         <div data-role="footer" data-position="fixed" data-theme="b" data-id="footermenu" data-tap-toggle="false">
+            <div data-role="navbar">
+               <ul class="footerul">
+                  <li class="inactive_page"><a  href="#home"><i class="icon-home footer-nav" ></i><br/><span class="footer-text">Начало</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#spravki"><i class="icon-report footer-nav"></i><br/><span class="footer-text">Справки</span></a>
+                  </li>
+                  <li class="active_page"><a href="#monitors"><i class="icon-monitor footer-nav"></i><br/><span class="footer-text">Монитор</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#nomenklaturi"><i class="icon-store footer-nav"></i><br/><span class="footer-text">Склад</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#filterpage"><i class="icon-squaresettings footer-nav"></i><br/><span class="footer-text">Други</span></a>
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <!-- СТРАНИЦА ЗА настройки на логването.Позволява връзка с произволна база-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <div data-role="page" id="settings_choser" data-theme="a">
+          <div data-role="header" data-theme="b" data-position="fixed" >
+            
+            <a href="#login" class="ui-btn-right h-button"  ><i class="icon-exit header-nav"></i></a>
+            <span class="ui-title"><i></i></span> 
+         </div>
+         <div data-role="content">
+             <a href="#settings" data-role="button" data-mini="true" class="buttonforpress" >Настройки база данни</a>
+             <a href="#accsettings"  data-role="button" data-mini="true" class="buttonforpress" >Допълнителни акаунти</a>
+         </div>
+      </div>
+      
+      <div data-role="page" id="settings" data-theme="a">
+          
+          <div data-role="header" data-theme="b" data-position="fixed" >
+            
+            <a href="#login" class="ui-btn-right h-button" data-transition="slidedown" ><i class="icon-exit header-nav"></i></a>
+            <span class="ui-title"><i></i></span> 
+         </div>
+         <div data-role="content">
+            Сървър на приложението (алтернативен само за АНДРОИД приложение)
+            <input type="text"  autocorrect="off" placeholder="Тук не въвеждайте нищо!" autocapitalize="off" autocomplite="off" spellcheck="false" id="urldata"/>
+            Database:
+            <input type="text" placeholder="път до базата(IP:път)" name="connstring" autocorrect="off" autocapitalize="off" autocomplite="off" spellcheck="false" id="databasepath"/>
+            User:
+            <input type="text" placeholder="SYSDBA ?" name="userbase" autocorrect="off" autocapitalize="off" autocomplite="off" spellcheck="false" id="databaseuser" />
+            Password:
+            <input type="text" placeholder="masterkey ?" name="parolabase" autocorrect="off" autocapitalize="off" autocomplite="off" spellcheck="false" id="databasepassword"/>
+            <input id="database_check" type="button" value="Проверка"/>
+            <br/>
+            <div id="databasetype" class="maincontent"></div>
+            <a href="#login" data-role="button" class="buttonforpress" id="savelogin">Запис</a>
+         </div>
+         <script>
+            if (localStorage.getItem('databasepath') !== null)
+                $('#databasepath').val(localStorage.getItem('databasepath'));
+            if (localStorage.getItem('databaseuser') !== null)
+                $('#databaseuser').val(localStorage.getItem('databaseuser'));
+            if (localStorage.getItem('databasepassword') !== null)
+                $('#databasepassword').val(localStorage.getItem('databasepassword'));
+            if (localStorage.getItem('urldata') !== null)
+                $('#urldata').val(localStorage.getItem('urldata'));
+         </script>
+       
+      </div>
+      
+      <div data-role="page" id="accsettings" data-theme="a">
+          
+          <div data-role="header" data-theme="b" data-position="fixed" >
+           
+            <a href="#login" class="ui-btn-right h-button" data-transition="slidedown"  ><i class="icon-exit header-nav"></i></a>
+            <span class="ui-title"><i></i></span> 
+         </div>
+         <div data-role="content">
+             Избери акаунт:
+             <select data-mini="true" name="account_number" id="mrep_number" > 
+                 <option>1</option>
+                 <option>2</option>
+                 <option>3</option>
+             </select>
+            Име на обекта:
+            <input type="text"  autocorrect="off" autocapitalize="off" autocomplite="off" spellcheck="false" id="mrep_obekt"/>
+            Потребителско име:
+            <input type="text" autocorrect="off" autocapitalize="off" autocomplite="off" spellcheck="false" id="mrep_user"/>
+            Парола:
+            <input type="text"  autocorrect="off" autocapitalize="off" autocomplite="off" spellcheck="false" id="mrep_parola" /> 
+           
+               <a href="#"  data-role="button" class="buttonforpress" id="save_account">Запис</a>
+               
+              
+         </div>
+         
+      </div>
+      <!-- СТРАНИЦА ЗА настройки на акаунтите.Позволява връзка с произволна база-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <!-- /header resultat ot spravkite-->
+      <div data-role="page" id="nomenklaturi">
+         <div data-role="header" data-theme="b" data-position="fixed" data-id="headermenu">
+            <h4>Справки</h4>
+         </div>
+         <div data-role="content">
+            <ul data-role="listview"  data-theme="a" data-inset="true">
+               <li><a href="#searchart" data-transition="none" >Артикули</a>
+               </li>
+               <li><a href="#searchpart" data-transition="none" >Партньори</a>
+               </li>
+            </ul>
+         </div>
+         <!-- /content -->
+         <div data-role="footer" data-position="fixed" data-theme="b" data-id="footermenu" data-tap-toggle="false">
+            <div data-role="navbar">
+               <ul class="footerul">
+                  <li class="inactive_page"><a  href="#home"><i class="icon-home footer-nav" ></i><br/><span class="footer-text">Начало</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#spravki"><i class="icon-report footer-nav"></i><br/><span class="footer-text">Справки</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#monitors"><i class="icon-monitor footer-nav"></i><br/><span class="footer-text">Монитор</span></a>
+                  </li>
+                  <li class="active_page"><a href="#nomenklaturi"><i class="icon-store footer-nav"></i><br/><span class="footer-text">Склад</span></a>
+                  </li>
+                  <li class="inactive_page"><a href="#filterpage"><i class="icon-squaresettings footer-nav"></i><br/><span class="footer-text">Други</span></a>
+                  </li>
+               </ul>
+            </div>
+         </div>
+         <!-- /footer -->
+      </div>
+      <script>
+         var globalTimeout = null;
+         var wait_art = 0;
+         $(document).ready(function () {
+             //$('#artikuls').html('Потърсете артикули в склада');
+             $('#searchvar').keyup(function () {
+                 
+                 var searchVal = $(this).val();
+                 var key = $('#keyforart').val();
+                 if (globalTimeout != null) {
+                     clearTimeout(globalTimeout);
+                 }
+                 globalTimeout = setTimeout(function () {
+                     globalTimeout = null;  
+                     $.mobile.loading('show', {
+                         text: 'Търсене...',
+                         textVisible: false,
+                         theme: 'b',
+                         html: ""
+                     });
+                   
+                     if(wait_art == 0)
+                     {
+                     $.get(urldata + 'scripts/search-art.php?partname=' + searchVal + "&key=" + key, function (returnData) {
+                       wait_art = 1;  
+                        if (!returnData) {
+                            // $('#artikuls').html('<p style="padding:5px;">Няма съвпадения!</p>');
+                            wait_art = 0;
+                         } else {
+                             $.mobile.loading('hide');
+                             wait_art = 0;
+                             $('#artikuls').html(returnData).show().trigger('create');
+                             //слага стил на листа който връща скрипта
+         
+                         }}
+                     );
+                     }
+                 }, 720);
+         
+         
+         
+         
+             });
+         
+         });
+      </script>
+      <div data-role="page" id="searchart">
+         <div data-role="header" data-position="fixed" data-id="headermenu" data-theme="b">
+            <div class="ui-grid-b">
+               <div class="ui-block-a">
+                  <a href="#nomenklaturi"  data-role="button" class="ui-btn-left" data-transition="none"><i class="icon-pageback header-nav" ></i></a>
+               </div>
+               <div class="ui-block-b">
+                  <select id="keyforart" data-mini="true" data-native-menu="true">
+                     <option value="art" style="text-shadow: none;">Търси по име &nbsp; &nbsp; &nbsp; &nbsp;   </option>
+                     <option value="num" >Търси по номер &nbsp; &nbsp; &nbsp; &nbsp;   </option>
+                     <option value="barcode">Търси по баркод &nbsp; &nbsp; &nbsp; &nbsp;</option>
+                  </select>
+               </div>
+               <div class="ui-block-c">
+                  <div class="app">   
+                     <a href="#" class="topcoat-button ui-btn-right" id="scan" data-role="button">
+                     <i class="icon-barcode header-nav" ></i>
+                     </a> 
+                  </div>
+               </div>
+               <!-- /navbar -->
+            </div>
+            <!-- /header -->
+         </div>
+         <div data-role="content" id="cont">
+            <div data-role="popup" id="artaction" >
+               <ul data-role="listview" data-inset="true" style="min-width:210px;" >
+                  <li data-role="divider"  id="artname">Артикул</li>
+                  <li><a href="#" id="art-nalobekti" data-name="51">Наличност по обекти</a></li>
+                  <li><a href="#" id="art-dvijenie" data-name="52">Движение</a></li>
+                  <li><a href="#" id="art-stats" data-name="53">Статистика</a></li>
+               </ul>
+            </div>
+            <input type="text" autocorrect="off" autocapitalize="off" autocomplite="off" spellcheck="false" id="searchvar" data-clear-btn="true" placeholder="Търсене..."/>
+            <script type="text/javascript">
+               app.initialize();     
+            </script>
+            <div id="artikuls" class="maincontent" style="display:none"></div>
+         </div>
+      </div>
+      <script>
+         var globalTimeout = null;
+         $(document).ready(function () {
+             $('#partners').html('<li><p style="padding:5px;"></p></li>');
+             $('#searchvarpart').keyup(function () {
+                 var searchVal = $(this).val();
+                 var key = $('#keyforpart').val();
+                 if (globalTimeout != null) {
+                     clearTimeout(globalTimeout);
+                 }
+                 globalTimeout = setTimeout(function () {
+                     globalTimeout = null;
+                     $.mobile.loading('show', {
+                         text: 'Търсене...',
+                         textVisible: false,
+                         theme: 'b',
+                         html: ""
+                     });
+                     $.get(urldata + 'scripts/search-part.php?partname=' + searchVal + "&key=" + key, function (returnData) {
+                         if (!returnData) {
+                             $('#partners').html('<p style="padding:5px;">Няма съвпадения!</p>').show();
+                         } else {
+                             $.mobile.loading('hide');
+                             $('#partners').html(returnData).show().trigger('create');
+                             //слага стил на листа който връща скрипта
+         
+                         }
+                     });
+         
+                 }, 720);
+         
+         
+         
+         
+             });
+         
+         });
+      </script>
+      <div data-role="page" id="searchpart" >
+         <div data-role="header" data-position="fixed" data-id="headermenu"  data-theme="b">
+            <div class="ui-grid-b">
+               <div class="ui-block-a">
+                  <a href="#nomenklaturi"  data-role="button" class="ui-btn-left" data-transition="none"><i class="icon-pageback header-nav" ></i></a>
+               </div>
+               <div class="ui-block-b">
+                  <select id="keyforpart" data-mini="true" data-native-menu="true">
+                     <option value="part">Търси по име &nbsp; &nbsp; &nbsp; &nbsp;   </option>
+                     <option value="bulstat">Търси по булстат &nbsp; &nbsp; &nbsp; &nbsp;   </option>
+                  </select>
+               </div>
+               <!-- /navbar -->
+            </div>
+            <!-- /header -->
+         </div>
+         <!-- /header -->
+         <div data-role="content">
+            <div data-role="popup" id="partaction" >
+               <ul data-role="listview" data-inset="true" style="min-width:210px;" >
+                  <li data-role="divider"  id="partname">Партньор</li>
+                  <li><a href="#"  data-name="71">Преглед</a></li>
+                  <li><a href="#"  data-name="15">История</a></li>
+               </ul>
+            </div>
+            <input type="text" autocorrect="off" autocapitalize="off" autocomplite="off" spellcheck="false" id="searchvarpart" data-clear-btn="true"  placeholder="Търсене..."/>
+            <div id="partners" class="maincontent" style="display:none"></div>
+         </div>
+         <!-- /content -->
+      </div>
+      <div data-role="page" id="help" data-theme="a">
+         <div data-role="content">
+            <a href="#home" data-rel="close" data-role="button" data-theme="e">Затвори</a>
+            
+            <h4>Функции на приложението</h4>
+            <h5>1 Начало</h5>
+            <h6>Това е първият екран на приложението.От тук чрез бутонът бързи справки може да активирате няколко справки независещи от период. Например : Оборот за днес, Наличност, Наличност на каси и др.</h6>
+            
+            <h5>2.Справки - Операции, Финансови, Други</h5>
+            <h6>Визуализирането на съответната справка става след въвеждане на период.Тук се ползва или вградения календар, който се визуализира след натискане върху датата.Алтернативен начин на задаване на период е да се ползват бутоните 1 - 7 - 30 - 360, които активират период назад във времето за съответния брой дни.Има и допълнителни настройки които може да се активират през бутона за настройки в горния ляв ъгъл на екрана.</h6> 
+            <h5>3.Мониторинг</h5>
+            <h6>С бутонът в горния ляв ъгъл се стартира монитор на отворените маси при ресторантска база данни.Данните автоматично се опресняват на 20 секунди.Масите оцветени в червено са маси отворени преди повече от 4 часа.При натискане върху всяка маса може да се види нейното съдържание.С бутонът в горния десен ъгъл се спира мониторингът на масите.</h6>
+            <h5>4.Склад</h5>
+            <h6>Търсене на  артикули по име, номер и баркод (Търсенето по баркод става посредством вградената камера на телефона).Стартира се чрез бутонът баркод. Предварително трябва да е избрано търсене по баркод от менюто.След намиране на артикулите ии натискане върху името и може да се пускат някои справки.</h6>
+            <h6>Търсене на партньори по име и булстат.</h6>
+            <h5>5.Други</h5>
+            <h6>Други функции.</h6>
+            
+            
+         </div>
+         <!-- /content -->
+      </div>
+      <div data-role="page" id="helplog" data-theme="a">
+         <div data-role="content">
+            <a href="#login" data-rel="close" data-role="button">Затвори</a>
+            <h5>Има три варианта за вход в системата.</h5>
+            <p>1. Въведете потребителското име, което сте получили и паролата за достъп до вашата база данни и натиснете бутона "Вход".</p>
+            <p>2. Натиснете бутона регистрация и попълнете данните за достъп до вашата база данни видима от нашият сървър. След това натиснете бутона Проверка.Ако има връзка с вашата база ще се появи информация за нея, както и лицензен ключ и поле за попъпване на желаното от вас потребителско име.Попълнете потребителското име с латински букви и натиснете бутонът Изпрати.Акунтът ви ще бъде активиран до 24 часа.</p>
+            <p>3. Използвайте тест вход за да разгледате програмата.За да виждате тези бутони трябва да нямате запазени потребител и парола в полетата.Ако сте го направили натиснете бутонът "Изчисти". Стартирайте приложнието отново.
+         </div>
+         <!-- /content -->
+      </div>
+      <div id="spravkaresult" data-role="page" data-close-btn="right" data-close-btn-text="Затвори">
+         <!--линк на който има прикачен клик ивент за показване на диалога с вотора вложеност на справката-->
+         <a id='lnkDialog' href="#spravkaresult" data-rel="dialog" data-corners="false" data-transition="none" data-close-btn-text="Затвори" style='display:none;'></a>
+         <div data-role="header" data-theme="b" data-position="fixed" data-id="headermenu">
+            <p id="dialog-header" style="text-align:center;"></p>
+         </div>
+         <!-- /линк за отваряне на диалога със сметката/ скрит е и се вика програмно от функция чрез click event -->
+         <div data-role="content" data-theme="a">
+            <div id="myMessage" data-close-btn-text="Затвори"></div>
+         </div>
+         <!-- /content -->
+      </div>
+       
+   </body>
+</html>
