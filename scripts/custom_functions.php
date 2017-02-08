@@ -1,4 +1,4 @@
-<?PHP
+﻿<?PHP
  
  
  
@@ -126,6 +126,11 @@ function encrypt_mistralpass($str)
 	
   }
   return $str;
+}
+
+function startsWith($haystack,$needle,$case=true) {
+    if($case){return (strcmp(substr($haystack, 0, strlen($needle)),$needle)===0);}
+    return (strcasecmp(substr($haystack, 0, strlen($needle)),$needle)===0);
 }
 
 function strToHex($string)
