@@ -183,6 +183,11 @@ $inobekti =  get_procedures_params($Databasecon);
                         get_oborbyoper($Databasecon, $ot, $do, $hours,1,$check, $objects);
                         break;
                         }
+                        case 25://ГОТОВА
+                         {
+                             get_oborbygroup($Databasecon, $ot, $do, $hours,1,$check, $objects);
+                             break;
+                          }
                         case 71:
                         {
                         get_partnerinfo($Databasecon, $klientid);

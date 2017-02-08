@@ -1722,57 +1722,178 @@ SQL;
    
 }
 function get_oborbyoper($DB, $ot, $do, $hours, $filter, $check)
-{	
-	global $inobekti;
+ {
+ 	global $inobekti;
+$sql = <<<SQL
+    select *
+      FROM QOBORBYOPER('$ot $hours:00:00', '$do $hours:00:00' $inobekti ) where OBOR > 0
+      order by OBEKTNAME, OPER
+SQL;
+     $sth          = $DB->query($sql);
+     $sumobor      = 0;
+     $sumteksmetki = 0;
+     $result       = '<table data-role="table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive mytable" data-column-btn-theme="a" data-column-btn-text="Още колонки..." data-column-popup-theme="a" data-filter="true" data-input="#filterBasic-input">
+                 <thead>
+                 <tr class="ui-bar-d">
+                   <th>Опер.</th>
+                   <th>Оборот</th>
+                   <th data-priority="3">Отст.</th>
+                   <th>Отв.сметки</th>
+                   <th data-priority="4">Обект</th>
+                   <th data-priority="1">Сторно</th>
+                   </tr>
+                 </thead>
+                 <tbody>';
+     while ($row = $sth->fetch(PDO::FETCH_OBJ)) {
+         $result .= '
+                 <tr>
+                 <td>' . fix_str($row->OPER) . '</td>
+                 <td>' . fix_numb($row->OBOR, 2) . '</td>
+                 <td>' . fix_numb($row->DISCOUNT, 2) . '</td>
+                 <td>' . fix_numb($row->SUMTEKSMETKI, 2) . '</td>
+                 <td>' . fix_str($row->OBEKTNAME) . '</td>';
+         if (property_exists($row, 'SUMCLEARROWS'))
+             $result .= '<td data-priority="4">' . fix_str($row->SUMCLEARROWS) . '</td>';
+         else
+             $result .= '<td data-priority="4">Вер.</td>';
+         '</tr>';
+         $sumobor += $row->OBOR;
+         $sumteksmetki += $row->SUMTEKSMETKI;
+     }
+     $result .= '<tr>
+                 <td></td>
+                 <td>' . fix_numb($sumobor, 2) . '</td>
+                 <td></td>
+                 <td>' . fix_numb($sumteksmetki, 2) . '</td>
+                 <td></td>
+                 <td></td>
+                 </tr>';
+     $result .= '</tbody></table>';
+     $DB = NULL;
+     echo $result;
+ }
+ function get_oborbygroup($DB, $ot, $do, $hours, $filter, $check)
+ {
+ 	global $inobekti;
+	$group_sales = array();
+	$unstructured_groups = array();
+	$structured_groups = array();
+	$combined_data = array();
+	
+	
+	
     $sql          = <<<SQL
-   select *
-     FROM QOBORBYOPER('$ot $hours:00:00', '$do $hours:00:00' $inobekti ) where OBOR > 0 
-     order by OBEKTNAME, OPER 
-     
+	select sum(kol*salesprice) as SUMA, grypa from "QSMETKI"('$ot $hours:00:00', '$do $hours:00:00' $inobekti) group by grypa 
+    order by grypa
+SQL;
+
+$sql2         = <<<SQL
+	select nomer, name, grypa from groupid group by nomer, name, grypa 
 SQL;
     $sth          = $DB->query($sql);
-    $sumobor      = 0;
-    $sumteksmetki = 0;
-    $result       = '<table data-role="table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive mytable" data-column-btn-theme="a" data-column-btn-text="Още колонки..." data-column-popup-theme="a" data-filter="true" data-input="#filterBasic-input">
-                <thead>
-                <tr class="ui-bar-d">
-                  <th>Опер.</th>
-                  <th>Оборот</th>                    
-                  <th data-priority="3">Отст.</th>
-                  <th>Отв.сметки</th>
-                  <th data-priority="4">Обект</th>
-                  <th data-priority="1">Сторно</th>
-                  </tr>
-                </thead>
-                <tbody>';
-    while ($row = $sth->fetch(PDO::FETCH_OBJ)) {
-        $result .= '
-                <tr>
-                <td>' . fix_str($row->OPER) . '</td>
-                <td>' . fix_numb($row->OBOR, 2) . '</td>    
-                <td>' . fix_numb($row->DISCOUNT, 2) . '</td>
-                <td>' . fix_numb($row->SUMTEKSMETKI, 2) . '</td>
-                <td>' . fix_str($row->OBEKTNAME) . '</td>';
-        if (property_exists($row, 'SUMCLEARROWS'))
-            $result .= '<td data-priority="4">' . fix_str($row->SUMCLEARROWS) . '</td>';
-        else
-            $result .= '<td data-priority="4">Вер.</td>';
-        '</tr>';
-        $sumobor += $row->OBOR;
-        $sumteksmetki += $row->SUMTEKSMETKI;
-    }
-    $result .= '<tr>
-                <td></td>
-                <td>' . fix_numb($sumobor, 2) . '</td>    
-                <td></td>
-                <td>' . fix_numb($sumteksmetki, 2) . '</td>
-                <td></td>
-                <td></td>
-                </tr>';
-    $result .= '</tbody></table>';
-    $DB = NULL;
-    echo $result;
+	while ($row = $sth->fetch(PDO::FETCH_OBJ)) {
+		 $row->GRYPA = fix_str($row->GRYPA);
+		 $row->SUMA = fix_numb($row->SUMA, 2);
+		 if($row->GRYPA == "")
+			 $row->GRYPA = "Негрупирани";
+		 $group_sales[$row->GRYPA] = $row->SUMA;
+     }
+	 $sth2 = $DB->query($sql2);
+	 while ($row2 = $sth2->fetch(PDO::FETCH_OBJ)) {
+		 $row2->NAME = fix_str($row2->NAME);
+		 $unstructured_groups[$row2->NOMER] = $row2;
+     }
+	 $group_fullname = "";
+	 foreach($unstructured_groups as $k => $v)
+	 {	 $group_fullname = "";
+		 $parts = explode (".", $v->GRYPA);
+		 $size = count($parts);
+		// echo "razmer ".$size;
+	switch ($size) {//Тоша да се напраши с цикъл zastoto taka nima da raboti za grupi s 6-na vlojenost kakvito ne se srestat
+    case 2:
+        $group_fullname = $v->NAME;
+        break;
+    case 3:
+        $group_fullname = $unstructured_groups[$parts[0]]->NAME."/".$v->NAME;
+		break;
+		case 4:
+        $group_fullname = $unstructured_groups[$parts[0]]->NAME."/".$unstructured_groups[$parts[1]]->NAME."/".$v->NAME;
+		break;
+		case 5:
+        $group_fullname = $unstructured_groups[$parts[0]]->NAME."/".$unstructured_groups[$parts[1]]->NAME."/".$unstructured_groups[$parts[2]]->NAME."/".$v->NAME;
+        break;
+    default:
+        $group_fullname = $group_fullname.$unstructured_groups[$parts[0]]->NAME."/".$unstructured_groups[$parts[1]]->NAME."/".$unstructured_groups[$parts[2]]->NAME."/".$unstructured_groups[$parts[3]]->NAME."/".$v->NAME;
 }
+$structured_groups[] = $group_fullname;
+
+
+
+			
+		}
+		$structured_groups[] = "Негрупирани";
+asort($structured_groups);
+//print_r($structured_groups);
+
+foreach($structured_groups as $k => $v)
+{	$total = 0;
+//var_eacdump($group_sales);
+	foreach($group_sales as $m => $n)
+	{	
+		//Proveriava dali grupata ot dyrvoto se sresta vav vtoria masiv kato chast ot imeto kato se izkluchvat sluchaite v koito podgrupa sysdyrja v sebe si imeto na druga podgrupa na primer SKARA i SKARA ZA DOMA
+		if((mb_substr($m, 0, mb_strlen($v, "utf-8"), "utf-8") == $v) && ($m == $v || (mb_substr($m, mb_strlen($v, "utf-8"), 1, "utf-8") == "/") ))
+	    $total+=$n;
+	}
+	if($total > 0)
+	$combined_data[$v] = $total;
+    $total = 0;	
+}
+		// print_r($combined_data);
+		
+     $result       = '
+	 <p class="ui-mini">'.$ot.' '. $hours.':00:00 - '.$do.' '.$hours.':00:00</p>
+	 <table data-role="table" data-mode="columntoggle:none" class="ui-body-d ui-shadow table-stripe ui-responsive mytable" data-column-btn-theme="a" data-column-btn-text="Още колонки..." data-column-popup-theme="a" data-filter="true" data-input="#filterBasic-input">
+                 <thead>
+                 <tr class="ui-bar-d">
+                   <th>Група</th>
+                   <th>Оборот</th>
+                   </tr>
+                 </thead>
+                 <tbody>';
+     foreach($combined_data as $k => $v)
+	 {	$tree_count = count(explode("/", $k));
+		
+		if($tree_count == 1){
+			$font = $font = 'style="font-size: 1.1em;"';
+			$border = 4;	
+		}
+		else if ($tree_count == 2)
+		{
+			$font = $font = 'style="font-size: 0.9em;"';
+			$border = 3;
+		}
+		else if ($tree_count == 3)
+		{
+			$font = $font = 'style="font-size: 0.8em;"';
+			$border = 1;
+		}
+		else{
+			$font = "";
+			$border = 0;
+		}
+		
+     $result .= '<tr style="border-bottom: '.$border.'px solid black;"border-top: '.$border.'px solid black;">   
+                 <td '.$font.' >' . $k . '</td>
+                 <td '.$font.'>' . fix_numb($v, 2). '</td>
+                 </tr>';
+	 }
+     $result .= '</tbody></table>';
+	 
+	
+     $DB = NULL;
+     echo $result;
+ }
+
 function get_parpotoci($DB, $ot, $do, $hours, $filter, $check)
 {	global $inobekti;
     $sql    = <<<SQL
